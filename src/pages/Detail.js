@@ -1,6 +1,8 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import { Nav } from "react-bootstrap";
+import { useDispatch } from "react-redux";
+import { addItem } from "../store";
 // import styled from "styled-components";
 
 // const Btn = styled.button`
@@ -19,6 +21,8 @@ function Detail(props) {
   let [num, setNum] = useState("");
   const [tap, setTap] = useState(0);
   const [fade, setFade] = useState("");
+
+  const dispatch = useDispatch();
 
   // useEffect(() => {
   //   const a = setTimeout(() => {
@@ -76,7 +80,15 @@ function Detail(props) {
           <h4 className="pt-5">{product.title}</h4>
           <p>{product.content}</p>
           <p>{product.price}</p>
-          <button className="btn btn-danger">주문하기</button>
+          <button
+            onClick={() => {
+              dispatch(addItem({ id: 1, name: "Red Knit", count: 1 }));
+              console.log(product);
+            }}
+            className="btn btn-danger"
+          >
+            주문하기
+          </button>
         </div>
       </div>
 
