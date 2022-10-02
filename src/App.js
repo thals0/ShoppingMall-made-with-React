@@ -4,9 +4,11 @@ import { useState } from "react";
 import data from "./data";
 import { Routes, Route, Link, useNavigate, Outlet } from "react-router-dom";
 import Detail from "./pages/Detail";
+import axios from "axios";
 
 function App() {
   let [shoes, setShoes] = useState(data);
+  const [count, setCount] = useState(1);
   let navigate = useNavigate();
 
   return (
@@ -46,6 +48,36 @@ function App() {
                   })}
                 </Row>
               </Container>
+              <button
+                onClick={() => {
+                  // 로딩중 ui 띄우기
+                  axios
+                    .get(
+                      // "https://codingapple1.github.io/shop/data" +
+                      //   setCount(count + 1) +
+                      //   ".json"
+                      "https://codingapple1.github.io/shop/data2.json"
+                    )
+                    .then((result) => {
+                      if (count < 4) {
+                        const copy = [...shoes, ...result.data];
+                        setShoes(copy);
+                      } else {
+                        // display = none
+                        <div>상품 더 없음</div>;
+                      }
+                      // console.log(result.data);
+
+                      // 로딩중 ui 숨기기
+                    })
+                    .catch(() => {
+                      console.log("data 가져오기 실패");
+                      // 로딩중 ui 숨기기
+                    });
+                }}
+              >
+                더보기
+              </button>
             </>
           }
         />
