@@ -4,12 +4,13 @@ import { useState } from "react";
 import data from "./data";
 import { Routes, Route, Link, useNavigate, Outlet } from "react-router-dom";
 import Detail from "./pages/Detail";
+import Cart from "./pages/Cart";
 import axios from "axios";
 
 function App() {
-  let [shoes, setShoes] = useState(data);
+  const [shoes, setShoes] = useState(data);
   const [count, setCount] = useState(1);
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <div className="App">
@@ -82,6 +83,7 @@ function App() {
           }
         />
         <Route path="/detail/:id" element={<Detail shoes={shoes} />} />
+        <Route path="/cart" element={<Cart shoes={shoes} />} />
         <Route path="*" element={<div>없는페이지임</div>} />
         <Route path="/about" element={<About />}>
           <Route path="member" element={<div>member</div>} />
