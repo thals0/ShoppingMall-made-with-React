@@ -1,5 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
+import { Nav } from "react-bootstrap";
 // import styled from "styled-components";
 
 // const Btn = styled.button`
@@ -16,6 +17,8 @@ function Detail(props) {
   // console.log(product.id);
   // let [alert, setAlert] = useState(true);
   let [num, setNum] = useState("");
+  const [tap, setTap] = useState(0);
+  const [fade, setFade] = useState("");
 
   // useEffect(() => {
   //   const a = setTimeout(() => {
@@ -33,8 +36,19 @@ function Detail(props) {
     }
   }, [num]);
 
+  useEffect(() => {
+    const a = setTimeout(() => {
+      setFade("end");
+    }, 100);
+
+    return () => {
+      clearTimeout(a);
+      setFade("");
+    };
+  }, []);
+
   return (
-    <div className="container">
+    <div className={"container start " + fade}>
       {/* {alert === true ? (
         <div className="alert alert-warning">2초 이내 구매시 할인</div>
       ) : null} */}
@@ -65,8 +79,70 @@ function Detail(props) {
           <button className="btn btn-danger">주문하기</button>
         </div>
       </div>
+
+      <Nav variant="tabs" defaultActiveKey="link0">
+        <Nav.Item>
+          <Nav.Link
+            onClick={() => {
+              setTap(0);
+            }}
+            eventKey="link0"
+          >
+            버튼0
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link
+            onClick={() => {
+              setTap(1);
+            }}
+            eventKey="link1"
+          >
+            버튼1
+          </Nav.Link>
+        </Nav.Item>
+        <Nav.Item>
+          <Nav.Link
+            onClick={() => {
+              setTap(2);
+            }}
+            eventKey="link2"
+          >
+            버튼2
+          </Nav.Link>
+        </Nav.Item>
+      </Nav>
+      <TapContent tap={tap} shoes={props.shoes} />
     </div>
   );
+}
+
+function TapContent({ tap, shoes }) {
+  const [fade, setFade] = useState("");
+  useEffect(() => {
+    const a = setTimeout(() => {
+      setFade("end");
+    }, 100);
+
+    return () => {
+      clearTimeout(a);
+      setFade("");
+    };
+  }, [tap]);
+
+  if (tap === 0) {
+    return (
+      <div className={`start ${fade}`}>
+        <div>{shoes[0].title}</div>
+      </div>
+    );
+  }
+  if (tap === 1) {
+    return <div className={`start ${fade}`}>내용1</div>;
+  }
+  if (tap === 2) {
+    return <div className={`start ${fade}`}>내용2</div>;
+  }
 }
 
 export default Detail;
