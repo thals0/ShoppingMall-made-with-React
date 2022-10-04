@@ -17,22 +17,33 @@ function Detail(props) {
   let { id } = useParams();
   let product = props.shoes.find((x) => x.id == id);
   // console.log(product.id);
-  // let [alert, setAlert] = useState(true);
+  let [alert0, setAlert] = useState(true);
   let [num, setNum] = useState("");
   const [tap, setTap] = useState(0);
   const [fade, setFade] = useState("");
 
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   const a = setTimeout(() => {
-  //     setAlert(false);
-  //   }, 2000);
+  useEffect(() => {
+    let 꺼낸거 = localStorage.getItem("watched");
+    꺼낸거 = JSON.parse(꺼낸거);
+    꺼낸거.push(product.id);
 
-  //   return () => {
-  //     clearTimeout(a);
-  //   };
-  // }, []);
+    //Set으로 바꿨다가 다시 array로 만들기
+    꺼낸거 = new Set(꺼낸거);
+    꺼낸거 = Array.from(꺼낸거);
+    localStorage.setItem("watched", JSON.stringify(꺼낸거));
+  }, []);
+
+  useEffect(() => {
+    const a = setTimeout(() => {
+      setAlert(false);
+    }, 2000);
+
+    return () => {
+      clearTimeout(a);
+    };
+  }, []);
 
   useEffect(() => {
     if (isNaN(num) == true) {
@@ -51,11 +62,18 @@ function Detail(props) {
     };
   }, []);
 
+  // useEffect(() => {
+  //   let get = localStorage.getItem("watched");
+  //   get = JSON.parse(get);
+  //   get.push(product.id);
+  //   localStorage.setItem("watched", JSON.stringify(get));
+  // });
+
   return (
     <div className={"container start " + fade}>
-      {/* {alert === true ? (
+      {alert0 === true ? (
         <div className="alert alert-warning">2초 이내 구매시 할인</div>
-      ) : null} */}
+      ) : null}
       <input
         onChange={(e) => {
           setNum(e.target.value);
