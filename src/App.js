@@ -1,16 +1,30 @@
 import "./App.css";
 import { Container, Nav, Navbar, Row, Col } from "react-bootstrap";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import data from "./data";
 import { Routes, Route, Link, useNavigate, Outlet } from "react-router-dom";
 import Detail from "./pages/Detail";
 import Cart from "./pages/Cart";
 import axios from "axios";
+import { useQuery } from "react-query";
 
 function App() {
+  useEffect(() => {
+    localStorage.setItem("watched", JSON.stringify([]));
+  }, []);
+
   const [shoes, setShoes] = useState(data);
   const [count, setCount] = useState(1);
   const navigate = useNavigate();
+
+  const result = useQuery("user", () => {
+    return axios
+      .get("http://codingapple1.github.io/userdata.json")
+      .then((a) => {
+        console.log("요청됨");
+        return a.data;
+      });
+  });
 
   return (
     <div className="App">
@@ -26,12 +40,24 @@ function App() {
           <Nav className="me-auto">
             <Nav.Link
               onClick={() => {
-                navigate("/detail");
+                navigate("/detail/0");
               }}
             >
               Detail
             </Nav.Link>
-            <Nav.Link href="#features">Cart</Nav.Link>
+            <Nav.Link
+              onClick={() => {
+                navigate("/cart");
+              }}
+            >
+              Cart
+            </Nav.Link>
+          </Nav>
+          <Nav className="ms-auto">
+            {/* {result.isLoading ? "로딩중" : result.data.name} */}
+            {result.isLoading && "로딩중"}
+            {result.error && "에러남"}
+            {result.data && result.data.name}
           </Nav>
         </Container>
       </Navbar>
